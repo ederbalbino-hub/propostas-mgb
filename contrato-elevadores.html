@@ -1,0 +1,1426 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MGB Mídia — Mapa de Mídia / Contrato</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+  :root {
+    --deep-purple: #1E0A3C;
+    --purple: #6B21A8;
+    --magenta: #D946EF;
+    --pink: #EC4899;
+    --lilac: #C084FC;
+    --bg: #F8F5FF;
+    --card: #FFFFFF;
+    --border: #E9E0F5;
+    --text: #1E0A3C;
+    --text-light: #6B7280;
+    --success: #10B981;
+    --error: #EF4444;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+  }
+
+  /* ── HEADER ── */
+  .header {
+    background: linear-gradient(135deg, var(--deep-purple) 0%, var(--purple) 50%, var(--magenta) 100%);
+    padding: 24px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 4px 20px rgba(30,10,60,0.3);
+  }
+  .header-left { display: flex; align-items: center; gap: 16px; }
+  .logo-circle {
+    width: 50px; height: 50px; border-radius: 50%;
+    background: rgba(255,255,255,0.15); backdrop-filter: blur(10px);
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 800; font-size: 18px; color: #fff;
+    border: 2px solid rgba(255,255,255,0.3);
+  }
+  .header h1 { color: #fff; font-size: 22px; font-weight: 700; letter-spacing: -0.5px; }
+  .header p { color: rgba(255,255,255,0.7); font-size: 13px; margin-top: 2px; }
+  .header-actions { display: flex; gap: 10px; }
+  .btn-header {
+    padding: 10px 20px; border-radius: 8px; font-size: 13px; font-weight: 600;
+    cursor: pointer; border: none; transition: all 0.2s;
+  }
+  .btn-print { background: rgba(255,255,255,0.15); color: #fff; border: 1px solid rgba(255,255,255,0.3); }
+  .btn-print:hover { background: rgba(255,255,255,0.25); }
+  .btn-new { background: var(--magenta); color: #fff; }
+  .btn-new:hover { background: var(--pink); }
+
+  /* ── TABS ── */
+  .tabs {
+    display: flex; background: #fff; border-bottom: 2px solid var(--border);
+    padding: 0 40px;
+  }
+  .tab {
+    padding: 14px 24px; font-size: 14px; font-weight: 600; cursor: pointer;
+    border-bottom: 3px solid transparent; color: var(--text-light);
+    transition: all 0.2s;
+  }
+  .tab:hover { color: var(--purple); }
+  .tab.active { color: var(--purple); border-bottom-color: var(--magenta); }
+
+  /* ── MAIN ── */
+  .main { max-width: 1100px; margin: 0 auto; padding: 30px 20px; }
+  .section { display: none; }
+  .section.active { display: block; }
+
+  /* ── CARDS ── */
+  .card {
+    background: var(--card); border-radius: 14px; padding: 28px;
+    margin-bottom: 20px; border: 1px solid var(--border);
+    box-shadow: 0 2px 10px rgba(30,10,60,0.04);
+  }
+  .card-title {
+    font-size: 16px; font-weight: 700; color: var(--purple);
+    margin-bottom: 20px; display: flex; align-items: center; gap: 10px;
+  }
+  .card-title .icon {
+    width: 32px; height: 32px; border-radius: 8px;
+    background: linear-gradient(135deg, var(--purple), var(--magenta));
+    display: flex; align-items: center; justify-content: center;
+    color: #fff; font-size: 15px;
+  }
+
+  /* ── FORM ── */
+  .form-grid {
+    display: grid; gap: 16px;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  }
+  .form-group { display: flex; flex-direction: column; gap: 6px; }
+  .form-group.full { grid-column: 1 / -1; }
+
+  label {
+    font-size: 12px; font-weight: 600; color: var(--text-light);
+    text-transform: uppercase; letter-spacing: 0.5px;
+  }
+  input, select, textarea {
+    padding: 11px 14px; border: 1.5px solid var(--border); border-radius: 9px;
+    font-size: 14px; font-family: 'Inter', sans-serif; color: var(--text);
+    transition: border-color 0.2s, box-shadow 0.2s;
+    background: #FDFBFF;
+  }
+  input:focus, select:focus, textarea:focus {
+    outline: none; border-color: var(--magenta);
+    box-shadow: 0 0 0 3px rgba(217,70,239,0.12);
+  }
+  input.loading { background: #f0ebf8 url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 50 50"><circle cx="25" cy="25" r="20" fill="none" stroke="%236B21A8" stroke-width="4" stroke-dasharray="80" stroke-dashoffset="60"><animateTransform attributeName="transform" type="rotate" from="0 25 25" to="360 25 25" dur="0.8s" repeatCount="indefinite"/></circle></svg>') no-repeat right 10px center; background-size: 18px; }
+  input.success { border-color: var(--success); }
+  input.error { border-color: var(--error); }
+  textarea { resize: vertical; min-height: 80px; }
+
+  .inline-hint {
+    font-size: 11px; color: var(--text-light); font-style: italic;
+  }
+
+  /* ── TIPO PESSOA toggle ── */
+  .toggle-group {
+    display: flex; gap: 0; border-radius: 9px; overflow: hidden;
+    border: 1.5px solid var(--border);
+  }
+  .toggle-option {
+    flex: 1; padding: 11px 16px; text-align: center; cursor: pointer;
+    font-size: 13px; font-weight: 600; background: #FDFBFF;
+    transition: all 0.2s; color: var(--text-light);
+  }
+  .toggle-option.active {
+    background: linear-gradient(135deg, var(--purple), var(--magenta));
+    color: #fff;
+  }
+
+  /* ── CONDOMÍNIOS ── */
+  .condo-grid {
+    display: grid; gap: 12px;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  }
+  .condo-card {
+    border: 2px solid var(--border); border-radius: 12px; padding: 16px;
+    cursor: pointer; transition: all 0.25s; position: relative;
+    background: #FDFBFF;
+  }
+  .condo-card:hover { border-color: var(--lilac); transform: translateY(-2px); box-shadow: 0 4px 15px rgba(107,33,168,0.1); }
+  .condo-card.selected {
+    border-color: var(--magenta); background: linear-gradient(135deg, rgba(107,33,168,0.04), rgba(217,70,239,0.06));
+  }
+  .condo-card.selected::after {
+    content: '\2713'; position: absolute; top: 10px; right: 12px;
+    width: 24px; height: 24px; border-radius: 50%;
+    background: var(--magenta); color: #fff; font-size: 13px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .condo-name { font-weight: 700; font-size: 14px; color: var(--deep-purple); }
+  .condo-info { font-size: 12px; color: var(--text-light); margin-top: 4px; line-height: 1.5; }
+  .condo-badge {
+    display: inline-block; padding: 2px 8px; border-radius: 20px;
+    font-size: 10px; font-weight: 700; margin-top: 6px;
+    text-transform: uppercase; letter-spacing: 0.3px;
+  }
+  .badge-ativo { background: rgba(16,185,129,0.12); color: #059669; }
+  .badge-expansao { background: rgba(217,70,239,0.12); color: var(--purple); }
+
+  .condo-summary {
+    margin-top: 16px; padding: 16px; border-radius: 10px;
+    background: linear-gradient(135deg, rgba(107,33,168,0.06), rgba(217,70,239,0.08));
+    display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;
+  }
+  .summary-item { text-align: center; }
+  .summary-number { font-size: 24px; font-weight: 800; color: var(--purple); }
+  .summary-label { font-size: 11px; color: var(--text-light); font-weight: 600; text-transform: uppercase; }
+
+  /* ── PLANO ── */
+  .plan-grid { display: grid; gap: 12px; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); }
+  .plan-card {
+    border: 2px solid var(--border); border-radius: 12px; padding: 20px;
+    text-align: center; cursor: pointer; transition: all 0.25s;
+    background: #FDFBFF; position: relative;
+  }
+  .plan-card:hover { border-color: var(--lilac); }
+  .plan-card.selected { border-color: var(--magenta); background: linear-gradient(135deg, rgba(107,33,168,0.04), rgba(217,70,239,0.06)); }
+  .plan-name { font-size: 16px; font-weight: 700; color: var(--deep-purple); }
+  .plan-duration { font-size: 13px; color: var(--purple); margin-top: 4px; font-weight: 600; }
+  .plan-desc { font-size: 12px; color: var(--text-light); margin-top: 8px; line-height: 1.5; }
+
+  /* ── DURATION ALERT ── */
+  .duration-alert {
+    margin-top: 12px; padding: 12px 16px; border-radius: 10px;
+    background: rgba(239,68,68,0.08); border: 1px solid rgba(239,68,68,0.2);
+    font-size: 13px; color: #B91C1C; font-weight: 600;
+    display: none;
+  }
+  .duration-alert.visible { display: block; }
+
+  /* ── RESUMO / CONTRATO ── */
+  .contract-preview {
+    background: #fff; border: 2px solid var(--border); border-radius: 14px;
+    padding: 40px; max-width: 800px; margin: 0 auto;
+  }
+  .contract-header-bar {
+    text-align: center; padding-bottom: 24px;
+    border-bottom: 3px solid var(--purple); margin-bottom: 24px;
+  }
+  .contract-header-bar h2 { font-size: 20px; color: var(--deep-purple); }
+  .contract-header-bar p { font-size: 12px; color: var(--text-light); margin-top: 4px; }
+
+  .contract-section { margin-bottom: 20px; }
+  .contract-section h3 {
+    font-size: 13px; font-weight: 700; color: var(--purple);
+    text-transform: uppercase; letter-spacing: 0.5px;
+    margin-bottom: 10px; padding-bottom: 6px; border-bottom: 1px solid var(--border);
+  }
+  .contract-row {
+    display: flex; justify-content: space-between; padding: 6px 0;
+    font-size: 13px; border-bottom: 1px dotted #eee;
+  }
+  .contract-row .label { color: var(--text-light); }
+  .contract-row .value { font-weight: 600; color: var(--text); text-align: right; max-width: 60%; }
+
+  .contract-table {
+    width: 100%; border-collapse: collapse; font-size: 13px; margin-top: 8px;
+  }
+  .contract-table th {
+    background: var(--deep-purple); color: #fff; padding: 8px 12px;
+    text-align: left; font-size: 11px; text-transform: uppercase; letter-spacing: 0.3px;
+  }
+  .contract-table td { padding: 8px 12px; border-bottom: 1px solid var(--border); }
+  .contract-table tr:nth-child(even) { background: #F8F5FF; }
+
+  .contract-total {
+    text-align: right; margin-top: 16px; padding: 16px;
+    background: linear-gradient(135deg, rgba(107,33,168,0.06), rgba(217,70,239,0.08));
+    border-radius: 10px;
+  }
+  .contract-total .big { font-size: 28px; font-weight: 800; color: var(--purple); }
+  .contract-total .small { font-size: 12px; color: var(--text-light); }
+
+  .signature-area {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-top: 40px; padding-top: 20px;
+  }
+  .sig-line { border-top: 1px solid #333; padding-top: 8px; text-align: center; }
+  .sig-line .name { font-size: 13px; font-weight: 600; }
+  .sig-line .role { font-size: 11px; color: var(--text-light); }
+
+  /* ── BUTTONS ── */
+  .btn-primary {
+    padding: 12px 28px; border-radius: 10px; font-size: 14px; font-weight: 700;
+    cursor: pointer; border: none; color: #fff;
+    background: linear-gradient(135deg, var(--purple), var(--magenta));
+    transition: all 0.2s; box-shadow: 0 4px 15px rgba(107,33,168,0.25);
+  }
+  .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(107,33,168,0.35); }
+  .btn-secondary {
+    padding: 12px 28px; border-radius: 10px; font-size: 14px; font-weight: 600;
+    cursor: pointer; border: 1.5px solid var(--border); background: #fff; color: var(--text);
+    transition: all 0.2s;
+  }
+  .btn-secondary:hover { border-color: var(--purple); color: var(--purple); }
+
+  .actions { display: flex; gap: 12px; justify-content: flex-end; margin-top: 24px; }
+
+  /* ── CONTRACT HEADER (image-based for reliable print) ── */
+  .contract-art-header {
+    text-align: center; margin-bottom: 24px;
+  }
+  .contract-art-header img {
+    width: 100%; border-radius: 12px; display: block;
+  }
+  .contract-art-meta {
+    text-align: center; font-size: 11px; color: var(--text-light);
+    margin-top: 8px; margin-bottom: 8px;
+  }
+
+  /* ── CLAUSES (compact for 2-page print) ── */
+  .clauses { font-size: 9px; color: var(--text-light); line-height: 1.5; margin-top: 16px; }
+  .clauses h4 { font-size: 9.5px; color: var(--text); margin: 6px 0 2px; font-weight: 700; }
+  .clauses p { margin-bottom: 3px; }
+
+  /* ── PRINT ── */
+  @page { margin: 0; }
+
+  @media print {
+    html, body { background: #fff; margin: 0; padding: 0; }
+    body { padding: 12mm 10mm; }
+    .header, .tabs, .no-print { display: none !important; }
+    .main { max-width: 100%; padding: 0; margin: 0; }
+    .section { display: block !important; }
+    .section:not(#sec-contrato) { display: none !important; }
+    #sec-contrato { display: block !important; }
+    .card { box-shadow: none; border: none; padding: 0; }
+    .contract-preview { border: none; padding: 0; }
+    .actions { display: none !important; }
+
+    .contract-art-header { margin-bottom: 12px; }
+    .contract-art-header img { border-radius: 8px; }
+    .contract-art-meta { font-size: 10px; margin-top: 4px; }
+
+    .contract-section { margin-bottom: 10px; }
+    .contract-section h3 { margin-bottom: 6px; padding-bottom: 3px; font-size: 11px; }
+    .contract-row { padding: 3px 0; font-size: 11px; }
+    .contract-table { font-size: 10px; }
+    .contract-table th {
+      padding: 4px 6px; font-size: 9px;
+      background: #1E0A3C !important; color: #fff !important;
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+      color-adjust: exact !important;
+    }
+    .contract-table td { padding: 4px 6px; }
+    .contract-table tr:nth-child(even) {
+      background: #F8F5FF !important;
+      -webkit-print-color-adjust: exact !important;
+    }
+    .contract-total {
+      padding: 10px; margin-top: 10px;
+      background: rgba(107,33,168,0.06) !important;
+      -webkit-print-color-adjust: exact !important;
+    }
+    .contract-total .big { font-size: 22px; }
+    .clauses { font-size: 8px; line-height: 1.4; margin-top: 10px; }
+    .clauses h4 { font-size: 8.5px; margin: 4px 0 1px; }
+    .signature-area { margin-top: 24px; padding-top: 12px; }
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 768px) {
+    .header { padding: 16px 20px; flex-direction: column; gap: 12px; }
+    .main { padding: 16px 12px; }
+    .form-grid { grid-template-columns: 1fr; }
+    .condo-grid { grid-template-columns: 1fr; }
+    .plan-grid { grid-template-columns: 1fr 1fr; }
+    .tabs { padding: 0 12px; overflow-x: auto; }
+    .tab { padding: 12px 16px; font-size: 12px; white-space: nowrap; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-left">
+    <div class="logo-circle">M</div>
+    <div>
+      <h1>MGB Mídia</h1>
+      <p>Mapa de Mídia / Contrato de Veiculação</p>
+    </div>
+  </div>
+  <div class="header-actions">
+    <button class="btn-header btn-print" onclick="window.print()">🖨️ Imprimir</button>
+    <button class="btn-header btn-new" onclick="resetForm()">+ Novo Contrato</button>
+    <button class="btn-header btn-print" onclick="toggleConfig()" title="Configurações">⚙️</button>
+  </div>
+</div>
+
+<!-- CONFIG PANEL (hidden by default) -->
+<div id="config-panel" class="no-print" style="display:none; background:#fff; border-bottom:2px solid #E9E0F5; padding:16px 40px;">
+  <div style="max-width:1100px; margin:0 auto;">
+    <div style="display:flex; align-items:center; gap:10px; margin-bottom:12px;">
+      <span style="font-size:15px; font-weight:700; color:#6B21A8;">⚙️ Configuração do Google Sheets</span>
+      <span id="config-status" style="font-size:11px; padding:3px 10px; border-radius:20px; font-weight:600;"></span>
+    </div>
+    <div style="display:flex; gap:10px; align-items:flex-end;">
+      <div style="flex:1;">
+        <label style="font-size:11px; font-weight:600; color:#6B7280; text-transform:uppercase; letter-spacing:0.5px; display:block; margin-bottom:4px;">URL do Google Apps Script</label>
+        <input type="text" id="config-sheets-url" placeholder="Cole aqui: https://script.google.com/macros/s/ABCDE.../exec"
+          style="width:100%; padding:10px 14px; border:1.5px solid #E9E0F5; border-radius:9px; font-size:13px; font-family:monospace; background:#FDFBFF;">
+      </div>
+      <button onclick="saveConfig()" style="padding:10px 20px; border-radius:9px; border:none; background:linear-gradient(135deg,#6B21A8,#D946EF); color:#fff; font-weight:700; font-size:13px; cursor:pointer; white-space:nowrap;">Salvar</button>
+      <button onclick="testConfig()" style="padding:10px 20px; border-radius:9px; border:1.5px solid #E9E0F5; background:#fff; color:#6B21A8; font-weight:600; font-size:13px; cursor:pointer; white-space:nowrap;">Testar</button>
+    </div>
+    <p style="font-size:11px; color:#6B7280; margin-top:8px;">
+      A URL fica salva no navegador (localStorage). Não precisa colar de novo cada vez que abrir.
+    </p>
+  </div>
+</div>
+
+<!-- TABS -->
+<div class="tabs no-print">
+  <div class="tab active" data-tab="cliente" onclick="switchTab('cliente')">1. Cliente</div>
+  <div class="tab" data-tab="midia" onclick="switchTab('midia')">2. Mídia</div>
+  <div class="tab" data-tab="plano" onclick="switchTab('plano')">3. Plano</div>
+  <div class="tab" data-tab="contrato" onclick="switchTab('contrato')">4. Contrato</div>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+  <!-- ═══ TAB 1: CLIENTE ═══ -->
+  <div id="sec-cliente" class="section active">
+
+    <!-- Tipo Pessoa -->
+    <div class="card">
+      <div class="card-title"><div class="icon">👤</div> Tipo de Pessoa</div>
+      <div class="toggle-group">
+        <div class="toggle-option active" data-tipo="pj" onclick="setTipoPessoa('pj')">Pessoa Jurídica (CNPJ)</div>
+        <div class="toggle-option" data-tipo="pf" onclick="setTipoPessoa('pf')">Pessoa Física (CPF)</div>
+      </div>
+    </div>
+
+    <!-- Dados PJ -->
+    <div class="card" id="card-pj">
+      <div class="card-title"><div class="icon">🏢</div> Dados da Empresa</div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>CNPJ</label>
+          <input type="text" id="cnpj" placeholder="00.000.000/0000-00" oninput="maskCNPJ(this); autoFetchCNPJ()">
+          <span class="inline-hint" id="cnpj-hint">Digite o CNPJ para preencher automaticamente</span>
+        </div>
+        <div class="form-group">
+          <label>Razão Social</label>
+          <input type="text" id="razao_social" placeholder="Razão Social da empresa">
+        </div>
+        <div class="form-group">
+          <label>Nome Fantasia</label>
+          <input type="text" id="nome_fantasia" placeholder="Nome Fantasia">
+        </div>
+        <div class="form-group">
+          <label>Inscrição Estadual</label>
+          <input type="text" id="ie" placeholder="Inscrição Estadual (se houver)">
+        </div>
+      </div>
+    </div>
+
+    <!-- Dados PF -->
+    <div class="card" id="card-pf" style="display:none;">
+      <div class="card-title"><div class="icon">👤</div> Dados Pessoais</div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>CPF</label>
+          <input type="text" id="cpf" placeholder="000.000.000-00" oninput="maskCPF(this)">
+        </div>
+        <div class="form-group">
+          <label>Nome Completo</label>
+          <input type="text" id="nome_pf" placeholder="Nome completo">
+        </div>
+        <div class="form-group">
+          <label>RG</label>
+          <input type="text" id="rg" placeholder="RG">
+        </div>
+        <div class="form-group">
+          <label>Data de Nascimento</label>
+          <input type="date" id="nascimento">
+        </div>
+      </div>
+    </div>
+
+    <!-- Endereço -->
+    <div class="card">
+      <div class="card-title"><div class="icon">📍</div> Endereço</div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>CEP</label>
+          <input type="text" id="cep" placeholder="00000-000" oninput="maskCEP(this); autoFetchCEP()">
+          <span class="inline-hint" id="cep-hint">Digite o CEP para preencher automaticamente</span>
+        </div>
+        <div class="form-group" style="grid-column: span 2;">
+          <label>Logradouro</label>
+          <input type="text" id="logradouro" placeholder="Rua, Avenida...">
+        </div>
+        <div class="form-group">
+          <label>Número</label>
+          <input type="text" id="numero" placeholder="Nº">
+        </div>
+        <div class="form-group">
+          <label>Complemento</label>
+          <input type="text" id="complemento" placeholder="Sala, andar...">
+        </div>
+        <div class="form-group">
+          <label>Bairro</label>
+          <input type="text" id="bairro" placeholder="Bairro">
+        </div>
+        <div class="form-group">
+          <label>Cidade</label>
+          <input type="text" id="cidade" placeholder="Cidade">
+        </div>
+        <div class="form-group">
+          <label>Estado</label>
+          <select id="estado">
+            <option value="">Selecione</option>
+            <option value="AC">AC</option><option value="AL">AL</option><option value="AP">AP</option>
+            <option value="AM">AM</option><option value="BA">BA</option><option value="CE">CE</option>
+            <option value="DF">DF</option><option value="ES">ES</option><option value="GO">GO</option>
+            <option value="MA">MA</option><option value="MT">MT</option><option value="MS">MS</option>
+            <option value="MG">MG</option><option value="PA">PA</option><option value="PB">PB</option>
+            <option value="PR">PR</option><option value="PE">PE</option><option value="PI">PI</option>
+            <option value="RJ">RJ</option><option value="RN">RN</option><option value="RS">RS</option>
+            <option value="RO">RO</option><option value="RR">RR</option><option value="SC">SC</option>
+            <option value="SP">SP</option><option value="SE">SE</option><option value="TO">TO</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- Contato -->
+    <div class="card">
+      <div class="card-title"><div class="icon">📞</div> Contato</div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Responsável / Contato</label>
+          <input type="text" id="contato_nome" placeholder="Nome do responsável">
+        </div>
+        <div class="form-group">
+          <label>Cargo</label>
+          <input type="text" id="contato_cargo" placeholder="Ex: Diretor de Marketing">
+        </div>
+        <div class="form-group">
+          <label>Telefone</label>
+          <input type="text" id="contato_tel" placeholder="(00) 00000-0000" oninput="maskPhone(this)">
+        </div>
+        <div class="form-group">
+          <label>E-mail</label>
+          <input type="email" id="contato_email" placeholder="email@empresa.com">
+        </div>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button class="btn-primary" onclick="switchTab('midia')">Próximo: Selecionar Mídia →</button>
+    </div>
+  </div>
+
+  <!-- ═══ TAB 2: MÍDIA (Condomínios) ═══ -->
+  <div id="sec-midia" class="section">
+    <div class="card">
+      <div class="card-title"><div class="icon">🏢</div> Selecione os Condomínios</div>
+      <p style="font-size:13px; color:var(--text-light); margin-bottom:16px;">
+        Clique nos condomínios onde o cliente deseja veicular. Exibição mínima: <strong>440 inserções/dia por tela</strong> (~13.200/mês). Multiplicador de alcance: <strong>1,3x moradores</strong>.
+      </p>
+      <div class="condo-grid" id="condo-grid"></div>
+      <div class="condo-summary" id="condo-summary" style="display:none;">
+        <div class="summary-item">
+          <div class="summary-number" id="sum-condos">0</div>
+          <div class="summary-label">Condomínios</div>
+        </div>
+        <div class="summary-item">
+          <div class="summary-number" id="sum-telas">0</div>
+          <div class="summary-label">Telas</div>
+        </div>
+        <div class="summary-item">
+          <div class="summary-number" id="sum-moradores">0</div>
+          <div class="summary-label">Moradores</div>
+        </div>
+        <div class="summary-item">
+          <div class="summary-number" id="sum-insercoes">0</div>
+          <div class="summary-label">Inserções/dia</div>
+        </div>
+        <div class="summary-item">
+          <div class="summary-number" id="sum-insercoes-mes">0</div>
+          <div class="summary-label">Inserções/mês</div>
+        </div>
+        <div class="summary-item">
+          <div class="summary-number" id="sum-impactos">0</div>
+          <div class="summary-label">Impactos/mês (1,3x)</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Especificações do anúncio -->
+    <div class="card">
+      <div class="card-title"><div class="icon">🎬</div> Especificações do Anúncio</div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Duração do Spot</label>
+          <select id="spot_duracao" onchange="onDurationChange()">
+            <option value="10" data-mult="1" selected>10 segundos — Sem áudio (padrão)</option>
+            <option value="20" data-mult="2">20 segundos — Sem áudio (2x o valor)</option>
+            <option value="30" data-mult="3">30 segundos — Sem áudio (3x o valor)</option>
+          </select>
+          <div class="duration-alert" id="duration-alert">
+            ⚠️ Atenção: a duração selecionada aplica multiplicador no valor por tela.
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Formato</label>
+          <select id="spot_formato">
+            <option value="video" selected>Vídeo (MP4 / H.264)</option>
+            <option value="imagem">Imagem estática (JPG / PNG)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Resolução</label>
+          <input type="text" value="1080 x 1100 px" readonly style="background:#f0ebf8;">
+        </div>
+        <div class="form-group">
+          <label>Observações sobre o material</label>
+          <textarea id="obs_material" placeholder="Ex: O cliente vai entregar o material pronto / Precisa de produção..."></textarea>
+        </div>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button class="btn-secondary" onclick="switchTab('cliente')">← Voltar</button>
+      <button class="btn-primary" onclick="switchTab('plano')">Próximo: Plano →</button>
+    </div>
+  </div>
+
+  <!-- ═══ TAB 3: PLANO ═══ -->
+  <div id="sec-plano" class="section">
+    <div class="card">
+      <div class="card-title"><div class="icon">📋</div> Escolha o Plano de Veiculação</div>
+      <div class="plan-grid" id="plan-grid"></div>
+    </div>
+
+    <!-- Valores -->
+    <div class="card">
+      <div class="card-title"><div class="icon">💰</div> Investimento</div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Valor por Tela/Mês (R$) — base 10s</label>
+          <input type="text" id="valor_tela" placeholder="Ex: 290,00" oninput="calcTotal()">
+          <span class="inline-hint" id="valor-mult-hint"></span>
+        </div>
+        <div class="form-group">
+          <label>Valor Mensal Final (R$)</label>
+          <input type="text" id="valor_mensal_input" placeholder="Ex: 350,00" oninput="calcTotal()">
+          <span class="inline-hint" id="desconto-hint"></span>
+        </div>
+        <div class="form-group">
+          <label>Forma de Pagamento</label>
+          <select id="forma_pgto">
+            <option value="boleto">Boleto Bancário</option>
+            <option value="pix">PIX</option>
+            <option value="transferencia">Transferência Bancária</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Data de Início</label>
+          <input type="date" id="data_inicio">
+        </div>
+      </div>
+
+      <div class="condo-summary" style="margin-top:20px;">
+        <div class="summary-item">
+          <div class="summary-label">Telas selecionadas</div>
+          <div class="summary-number" id="inv-telas">0</div>
+        </div>
+        <div class="summary-item">
+          <div class="summary-label">Multiplicador</div>
+          <div class="summary-number" id="inv-mult">1x</div>
+        </div>
+        <div class="summary-item">
+          <div class="summary-label">Valor mensal</div>
+          <div class="summary-number" id="inv-mensal">R$ 0</div>
+        </div>
+        <div class="summary-item">
+          <div class="summary-label">Duração</div>
+          <div class="summary-number" id="inv-duracao">-</div>
+        </div>
+        <div class="summary-item">
+          <div class="summary-label">Total contrato</div>
+          <div class="summary-number" style="color:var(--magenta);" id="inv-total">R$ 0</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button class="btn-secondary" onclick="switchTab('midia')">← Voltar</button>
+      <button class="btn-primary" onclick="generateContract(); switchTab('contrato')">Gerar Contrato →</button>
+    </div>
+  </div>
+
+  <!-- ═══ TAB 4: CONTRATO ═══ -->
+  <div id="sec-contrato" class="section">
+    <!-- Save status banner -->
+    <div id="save-status" class="no-print" style="display:none; padding:12px 20px; border-radius:10px; margin-bottom:16px; font-size:13px; font-weight:600; text-align:center;"></div>
+
+    <div class="contract-preview" id="contract-output">
+      <!-- filled by JS -->
+    </div>
+    <div class="actions no-print">
+      <button class="btn-secondary" onclick="switchTab('plano')">← Voltar e Editar</button>
+      <button class="btn-primary" onclick="window.print()">🖨️ Imprimir / Salvar PDF</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// ═══════════════════════════════════════
+// CONFIGURAÇÃO — URL do Google Apps Script
+// Carrega do localStorage ou usa vazio
+// ═══════════════════════════════════════
+var GOOGLE_SHEETS_URL = (function(){ try { return localStorage.getItem('mgb_sheets_url') || ''; } catch(e) { return ''; } })() || 'https://script.google.com/macros/s/AKfycbwp3ps230Grfh_GZ6hutngEY-JPSCm-KMb4Be5J9rXxLlIl__YlJ_yhO6b-42nvPLFe4w/exec';
+
+function toggleConfig() {
+  var panel = document.getElementById('config-panel');
+  panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
+  if (panel.style.display === 'block') {
+    document.getElementById('config-sheets-url').value = GOOGLE_SHEETS_URL;
+    updateConfigStatus();
+  }
+}
+
+function saveConfig() {
+  var url = document.getElementById('config-sheets-url').value.trim();
+  GOOGLE_SHEETS_URL = url;
+  localStorage.setItem('mgb_sheets_url', url);
+  updateConfigStatus();
+}
+
+function updateConfigStatus() {
+  var el = document.getElementById('config-status');
+  if (GOOGLE_SHEETS_URL) {
+    el.textContent = '● Conectado';
+    el.style.background = '#DCFCE7';
+    el.style.color = '#166534';
+  } else {
+    el.textContent = '● Não configurado';
+    el.style.background = '#FEF3C7';
+    el.style.color = '#92400E';
+  }
+}
+
+function testConfig() {
+  var url = document.getElementById('config-sheets-url').value.trim();
+  if (!url) {
+    alert('Cole a URL primeiro!');
+    return;
+  }
+  // Salva antes de testar
+  GOOGLE_SHEETS_URL = url;
+  localStorage.setItem('mgb_sheets_url', url);
+  updateConfigStatus();
+
+  var statusEl = document.getElementById('config-status');
+  statusEl.textContent = '⏳ Testando...';
+  statusEl.style.background = '#EDE9FE';
+  statusEl.style.color = '#6B21A8';
+
+  fetch(url)
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      if (data.status === 'ok') {
+        statusEl.textContent = '✅ Funcionando!';
+        statusEl.style.background = '#DCFCE7';
+        statusEl.style.color = '#166534';
+        alert('Conexão OK! O banco de dados está pronto para receber contratos.');
+      } else {
+        throw new Error('Resposta inesperada');
+      }
+    })
+    .catch(function() {
+      // no-cors pode impedir leitura da resposta, mas se não deu erro de rede, provavelmente está ok
+      statusEl.textContent = '● Salvo (teste manual)';
+      statusEl.style.background = '#DBEAFE';
+      statusEl.style.color = '#1E40AF';
+      alert('URL salva! Para confirmar o funcionamento:\n\n1. Gere um contrato de teste\n2. Verifique se os dados apareceram na planilha do Google Sheets');
+    });
+}
+
+// ═══════════════════════════════════════
+// DATA — CONDOMÍNIOS ATUALIZADOS
+// ═══════════════════════════════════════
+const condominios = [
+  // ATIVOS
+  { id: 'lagoa-dourada', nome: 'Lagoa Dourada', bairro: 'Gleba Palhano, Zona Sul', torres: 6, telas: 6, moradores: 1344, status: 'ativo' },
+  { id: 'lake-portinari', nome: 'Lake Portinari', bairro: 'Gleba Palhano, Zona Sul', torres: 2, telas: 2, moradores: 865, status: 'ativo' },
+  { id: 'spazio-louvre', nome: 'Spazio Louvre', bairro: 'Centro', torres: 5, telas: 5, moradores: 1650, status: 'ativo' },
+  { id: 'terra-parque', nome: 'Terra Parque', bairro: 'Zona Sul', torres: 2, telas: 2, moradores: 450, status: 'ativo' },
+  { id: 'res-malaga', nome: 'Residencial Málaga', bairro: 'Zona Sul', torres: 3, telas: 3, moradores: 1290, status: 'ativo' },
+  // EM EXPANSÃO
+  { id: 'la-scilia', nome: 'Residencial La Scilia', bairro: 'Gleba Palhano, Zona Sul', torres: null, telas: null, moradores: null, status: 'expansao' },
+  { id: 'spot', nome: 'Spot', bairro: 'Centro de Londrina', torres: null, telas: null, moradores: null, status: 'expansao' },
+  { id: 'ed-ayrton-senna-1', nome: 'Ed. Ayrton Senna 1', bairro: 'Gleba Palhano, Zona Sul', torres: null, telas: null, moradores: null, status: 'expansao', tipo: 'Comercial' },
+  { id: 'ed-ayrton-senna-2', nome: 'Ed. Ayrton Senna 2', bairro: 'Gleba Palhano, Zona Sul', torres: null, telas: null, moradores: null, status: 'expansao', tipo: 'Comercial' },
+  { id: 'uptown', nome: 'Uptown', bairro: 'Gleba Palhano, Zona Sul', torres: null, telas: null, moradores: null, status: 'expansao' },
+  { id: 'bella-fiori', nome: 'Bella Fiori', bairro: 'Vale dos Tucanos, Zona Sul', torres: null, telas: null, moradores: null, status: 'expansao' },
+];
+
+// ═══════════════════════════════════════
+// DATA — PLANOS (sem descontos, com sugestão)
+// ═══════════════════════════════════════
+const planos = [
+  { id: 'mensal', nome: 'Mensal', meses: 1, sugestao: 'Ideal para campanhas pontuais, lançamentos ou datas comemorativas. Perfeito para testar o formato antes de se comprometer.' },
+  { id: 'trimestral', nome: 'Trimestral', meses: 3, sugestao: 'Indicado para campanhas sazonais e ações promocionais. Garante presença contínua durante um ciclo de compra.' },
+  { id: 'semestral', nome: 'Semestral', meses: 6, sugestao: 'Ótimo para construção de marca e awareness. Frequência gera lembrança — o morador vê sua marca todos os dias por 6 meses.' },
+  { id: 'anual', nome: 'Anual', meses: 12, sugestao: 'Máxima visibilidade e presença constante. Sua marca se torna referência dentro dos condomínios. Ideal para empresas locais que querem dominar a região.' },
+];
+
+let state = {
+  tipoPessoa: 'pj',
+  selectedCondos: new Set(),
+  selectedPlan: null,
+};
+
+// ═══════════════════════════════════════
+// TABS
+// ═══════════════════════════════════════
+function switchTab(tab) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelector('.tab[data-tab="'+tab+'"]').classList.add('active');
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.getElementById('sec-'+tab).classList.add('active');
+  window.scrollTo(0, 0);
+  if (tab === 'plano') calcTotal();
+}
+
+// ═══════════════════════════════════════
+// TIPO PESSOA
+// ═══════════════════════════════════════
+function setTipoPessoa(tipo) {
+  state.tipoPessoa = tipo;
+  document.querySelectorAll('.toggle-option').forEach(o => o.classList.toggle('active', o.dataset.tipo === tipo));
+  document.getElementById('card-pj').style.display = tipo === 'pj' ? 'block' : 'none';
+  document.getElementById('card-pf').style.display = tipo === 'pf' ? 'block' : 'none';
+}
+
+// ═══════════════════════════════════════
+// MASKS
+// ═══════════════════════════════════════
+function maskCNPJ(el) {
+  let v = el.value.replace(/\D/g, '').slice(0, 14);
+  v = v.replace(/^(\d{2})(\d)/, '$1.$2');
+  v = v.replace(/^(\d{2})\.(\d{3})(\d)/, '$1.$2.$3');
+  v = v.replace(/\.(\d{3})(\d)/, '.$1/$2');
+  v = v.replace(/(\d{4})(\d)/, '$1-$2');
+  el.value = v;
+}
+function maskCPF(el) {
+  let v = el.value.replace(/\D/g, '').slice(0, 11);
+  v = v.replace(/(\d{3})(\d)/, '$1.$2');
+  v = v.replace(/(\d{3})(\d)/, '$1.$2');
+  v = v.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+  el.value = v;
+}
+function maskCEP(el) {
+  let v = el.value.replace(/\D/g, '').slice(0, 8);
+  v = v.replace(/(\d{5})(\d)/, '$1-$2');
+  el.value = v;
+}
+function maskPhone(el) {
+  let v = el.value.replace(/\D/g, '').slice(0, 11);
+  if (v.length > 10) v = v.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3');
+  else if (v.length > 6) v = v.replace(/(\d{2})(\d{4})(\d{0,4})/, '($1) $2-$3');
+  else if (v.length > 2) v = v.replace(/(\d{2})(\d{0,5})/, '($1) $2');
+  el.value = v;
+}
+
+// ═══════════════════════════════════════
+// CNPJ AUTO-FILL — dispara automaticamente ao completar 14 dígitos
+// Usa BrasilAPI (CORS habilitado) com fallback para ReceitaWS via proxy
+// ═══════════════════════════════════════
+let cnpjTimeout = null;
+function autoFetchCNPJ() {
+  clearTimeout(cnpjTimeout);
+  const raw = document.getElementById('cnpj').value.replace(/\D/g, '');
+  if (raw.length === 14) {
+    cnpjTimeout = setTimeout(fetchCNPJ, 300);
+  }
+}
+
+async function fetchCNPJ() {
+  const raw = document.getElementById('cnpj').value.replace(/\D/g, '');
+  if (raw.length !== 14) return;
+  const inp = document.getElementById('cnpj');
+  const hint = document.getElementById('cnpj-hint');
+  inp.classList.remove('success', 'error');
+  inp.classList.add('loading');
+  hint.textContent = 'Consultando CNPJ...';
+  hint.style.color = '';
+
+  // Tenta BrasilAPI primeiro (CORS amigável)
+  let data = null;
+  try {
+    const res = await fetch('https://brasilapi.com.br/api/cnpj/v1/' + raw);
+    if (!res.ok) throw new Error('BrasilAPI error');
+    const d = await res.json();
+    data = {
+      nome: d.razao_social || '',
+      fantasia: d.nome_fantasia || '',
+      logradouro: d.logradouro || '',
+      numero: d.numero || '',
+      complemento: d.complemento || '',
+      bairro: d.bairro || '',
+      municipio: d.municipio || '',
+      uf: d.uf || '',
+      cep: d.cep ? String(d.cep).replace(/\D/g, '') : '',
+      telefone: d.ddd_telefone_1 || '',
+      email: d.email || '',
+    };
+  } catch (e1) {
+    // Fallback: ReceitaWS (pode ter CORS issues em localhost, mas funciona em muitos hosts)
+    try {
+      const res2 = await fetch('https://receitaws.com.br/v1/cnpj/' + raw, { headers: { 'Accept': 'application/json' } });
+      const d2 = await res2.json();
+      if (d2.status === 'ERROR') throw new Error(d2.message);
+      data = {
+        nome: d2.nome || '',
+        fantasia: d2.fantasia || '',
+        logradouro: d2.logradouro || '',
+        numero: d2.numero || '',
+        complemento: d2.complemento || '',
+        bairro: d2.bairro || '',
+        municipio: d2.municipio || '',
+        uf: d2.uf || '',
+        cep: (d2.cep || '').replace(/\D/g, ''),
+        telefone: d2.telefone ? d2.telefone.split('/')[0].trim() : '',
+        email: d2.email || '',
+      };
+    } catch (e2) {
+      // Ambos falharam
+      inp.classList.remove('loading');
+      inp.classList.add('error');
+      hint.textContent = '⚠️ Não foi possível consultar. Preencha manualmente.';
+      hint.style.color = '#EF4444';
+      setTimeout(() => { inp.classList.remove('error'); hint.style.color = ''; hint.textContent = 'Digite o CNPJ para preencher automaticamente'; }, 4000);
+      return;
+    }
+  }
+
+  // Preenche os campos
+  document.getElementById('razao_social').value = data.nome;
+  document.getElementById('nome_fantasia').value = data.fantasia;
+  if (data.cep) {
+    const cepFormatted = data.cep.replace(/(\d{5})(\d{3})/, '$1-$2');
+    document.getElementById('cep').value = cepFormatted;
+  }
+  document.getElementById('logradouro').value = data.logradouro;
+  document.getElementById('numero').value = data.numero;
+  document.getElementById('complemento').value = data.complemento;
+  document.getElementById('bairro').value = data.bairro;
+  document.getElementById('cidade').value = data.municipio;
+  if (data.uf) document.getElementById('estado').value = data.uf;
+  if (data.telefone) document.getElementById('contato_tel').value = data.telefone;
+  if (data.email) document.getElementById('contato_email').value = data.email.toLowerCase();
+
+  inp.classList.remove('loading');
+  inp.classList.add('success');
+  hint.textContent = '✅ Dados preenchidos automaticamente!';
+  hint.style.color = '#059669';
+}
+
+// ═══════════════════════════════════════
+// CEP AUTO-FILL — dispara automaticamente ao completar 8 dígitos
+// ═══════════════════════════════════════
+let cepTimeout = null;
+function autoFetchCEP() {
+  clearTimeout(cepTimeout);
+  const raw = document.getElementById('cep').value.replace(/\D/g, '');
+  if (raw.length === 8) {
+    cepTimeout = setTimeout(fetchCEP, 300);
+  }
+}
+
+async function fetchCEP() {
+  const raw = document.getElementById('cep').value.replace(/\D/g, '');
+  if (raw.length !== 8) return;
+  const inp = document.getElementById('cep');
+  const hint = document.getElementById('cep-hint');
+  inp.classList.remove('success', 'error');
+  inp.classList.add('loading');
+  hint.textContent = 'Consultando CEP...';
+  hint.style.color = '';
+  try {
+    const res = await fetch('https://viacep.com.br/ws/' + raw + '/json/');
+    const data = await res.json();
+    if (data.erro) throw new Error('CEP não encontrado');
+    document.getElementById('logradouro').value = data.logradouro || '';
+    document.getElementById('bairro').value = data.bairro || '';
+    document.getElementById('cidade').value = data.localidade || '';
+    document.getElementById('estado').value = data.uf || '';
+    inp.classList.remove('loading');
+    inp.classList.add('success');
+    hint.textContent = '✅ Endereço preenchido!';
+    hint.style.color = '#059669';
+  } catch {
+    inp.classList.remove('loading');
+    inp.classList.add('error');
+    hint.textContent = '⚠️ CEP não encontrado.';
+    hint.style.color = '#EF4444';
+    setTimeout(() => { inp.classList.remove('error'); hint.style.color = ''; hint.textContent = 'Digite o CEP para preencher automaticamente'; }, 3000);
+  }
+}
+
+// ═══════════════════════════════════════
+// DURATION CHANGE (multiplicador de preço)
+// ═══════════════════════════════════════
+function onDurationChange() {
+  const sel = document.getElementById('spot_duracao');
+  const mult = parseInt(sel.selectedOptions[0].dataset.mult);
+  const alert = document.getElementById('duration-alert');
+  if (mult > 1) {
+    alert.textContent = '⚠️ Duração de ' + sel.value + 's aplica multiplicador de ' + mult + 'x no valor por tela.';
+    alert.classList.add('visible');
+  } else {
+    alert.classList.remove('visible');
+  }
+  calcTotal();
+}
+
+function getDurationMult() {
+  const sel = document.getElementById('spot_duracao');
+  return parseInt(sel.selectedOptions[0].dataset.mult) || 1;
+}
+
+// ═══════════════════════════════════════
+// CONDOMINIOS RENDER
+// ═══════════════════════════════════════
+function renderCondos() {
+  const grid = document.getElementById('condo-grid');
+  grid.innerHTML = condominios.map(c => {
+    const isSelected = state.selectedCondos.has(c.id);
+    let infoLine = c.bairro;
+    if (c.torres) infoLine += ' · ' + c.torres + ' torres';
+    if (c.moradores) infoLine += ' · ' + c.moradores.toLocaleString('pt-BR') + ' moradores';
+    if (c.telas) infoLine += ' · ' + c.telas + ' tela(s)';
+    if (c.tipo) infoLine += ' · ' + c.tipo;
+    if (!c.torres && !c.moradores) infoLine += ' · Em breve';
+
+    return '<div class="condo-card ' + (isSelected ? 'selected' : '') + '" onclick="toggleCondo(\'' + c.id + '\')">' +
+      '<div class="condo-name">' + c.nome + '</div>' +
+      '<div class="condo-info">' + infoLine + '</div>' +
+      '<span class="condo-badge ' + (c.status === 'ativo' ? 'badge-ativo' : 'badge-expansao') + '">' +
+        (c.status === 'ativo' ? '● Ativo' : '◐ Em expansão') +
+      '</span></div>';
+  }).join('');
+  updateCondoSummary();
+}
+
+function toggleCondo(id) {
+  if (state.selectedCondos.has(id)) state.selectedCondos.delete(id);
+  else state.selectedCondos.add(id);
+  renderCondos();
+  calcTotal();
+}
+
+function updateCondoSummary() {
+  const sel = condominios.filter(c => state.selectedCondos.has(c.id));
+  const sumEl = document.getElementById('condo-summary');
+  if (sel.length === 0) { sumEl.style.display = 'none'; return; }
+  sumEl.style.display = 'flex';
+  const telas = sel.reduce((s, c) => s + (c.telas || 1), 0);
+  const moradores = sel.reduce((s, c) => s + (c.moradores || 0), 0);
+  document.getElementById('sum-condos').textContent = sel.length;
+  document.getElementById('sum-telas').textContent = telas;
+  document.getElementById('sum-moradores').textContent = moradores.toLocaleString('pt-BR');
+  const insercoesDia = telas * 440;
+  document.getElementById('sum-insercoes').textContent = insercoesDia.toLocaleString('pt-BR');
+  document.getElementById('sum-insercoes-mes').textContent = (insercoesDia * 30).toLocaleString('pt-BR');
+  document.getElementById('sum-impactos').textContent = Math.round(moradores * 1.3).toLocaleString('pt-BR');
+}
+
+// ═══════════════════════════════════════
+// PLANOS RENDER
+// ═══════════════════════════════════════
+function renderPlans() {
+  const grid = document.getElementById('plan-grid');
+  grid.innerHTML = planos.map(p => {
+    const isSelected = state.selectedPlan === p.id;
+    return '<div class="plan-card ' + (isSelected ? 'selected' : '') + '" onclick="selectPlan(\'' + p.id + '\')">' +
+      '<div class="plan-name">' + p.nome + '</div>' +
+      '<div class="plan-duration">' + p.meses + (p.meses === 1 ? ' mês' : ' meses') + '</div>' +
+      '<div class="plan-desc">' + p.sugestao + '</div>' +
+    '</div>';
+  }).join('');
+}
+
+function selectPlan(id) {
+  state.selectedPlan = id;
+  renderPlans();
+  calcTotal();
+}
+
+// ═══════════════════════════════════════
+// CÁLCULO
+// ═══════════════════════════════════════
+function calcTotal() {
+  const sel = condominios.filter(c => state.selectedCondos.has(c.id));
+  const telas = sel.reduce((s, c) => s + (c.telas || 1), 0);
+  const valorTela = parseFloat((document.getElementById('valor_tela').value || '0').replace(/\./g, '').replace(',', '.')) || 0;
+  const valorMensalRaw = (document.getElementById('valor_mensal_input').value || '').replace(/\./g, '').replace(',', '.');
+  const valorMensalDigitado = parseFloat(valorMensalRaw);
+  const mult = getDurationMult();
+  const plan = planos.find(p => p.id === state.selectedPlan);
+  const meses = plan ? plan.meses : 1;
+
+  const valorComMult = valorTela * mult;
+  const mensalCheio = telas * valorComMult;
+  const mensal = (!isNaN(valorMensalDigitado) && valorMensalDigitado > 0) ? valorMensalDigitado : mensalCheio;
+  const descontoEfetivo = mensalCheio > 0 ? Math.max(0, (1 - mensal / mensalCheio) * 100) : 0;
+  const total = mensal * meses;
+
+  document.getElementById('inv-telas').textContent = telas;
+  document.getElementById('inv-mult').textContent = mult + 'x';
+  document.getElementById('inv-mensal').textContent = 'R$ ' + mensal.toLocaleString('pt-BR', { minimumFractionDigits: 2 });
+  document.getElementById('inv-duracao').textContent = plan ? plan.nome : '-';
+  document.getElementById('inv-total').textContent = 'R$ ' + total.toLocaleString('pt-BR', { minimumFractionDigits: 2 });
+
+  const multHint = document.getElementById('valor-mult-hint');
+  if (mult > 1) {
+    multHint.textContent = 'Valor efetivo por tela: R$ ' + valorComMult.toLocaleString('pt-BR', { minimumFractionDigits: 2 }) + ' (' + mult + 'x)';
+    multHint.style.color = '#B91C1C';
+  } else {
+    multHint.textContent = '';
+  }
+
+  const descHint = document.getElementById('desconto-hint');
+  if (descHint) {
+    if (mensalCheio > 0 && !isNaN(valorMensalDigitado) && valorMensalDigitado > 0) {
+      if (descontoEfetivo > 0) {
+        descHint.textContent = 'Cheio: R$ ' + mensalCheio.toLocaleString('pt-BR', { minimumFractionDigits: 2 }) + ' · Desconto: ' + descontoEfetivo.toFixed(2).replace('.', ',') + '%';
+        descHint.style.color = '#15803D';
+      } else if (descontoEfetivo < 0) {
+        descHint.textContent = 'Acréscimo: ' + Math.abs(descontoEfetivo).toFixed(2).replace('.', ',') + '% sobre o cheio (R$ ' + mensalCheio.toLocaleString('pt-BR', { minimumFractionDigits: 2 }) + ')';
+        descHint.style.color = '#B45309';
+      } else {
+        descHint.textContent = 'Sem desconto — valor cheio: R$ ' + mensalCheio.toLocaleString('pt-BR', { minimumFractionDigits: 2 });
+        descHint.style.color = '#6B7280';
+      }
+    } else {
+      descHint.textContent = mensalCheio > 0 ? 'Cheio: R$ ' + mensalCheio.toLocaleString('pt-BR', { minimumFractionDigits: 2 }) : '';
+      descHint.style.color = '#6B7280';
+    }
+  }
+}
+
+// ═══════════════════════════════════════
+// GERAR CONTRATO
+// ═══════════════════════════════════════
+function generateContract() {
+  const isPJ = state.tipoPessoa === 'pj';
+  const sel = condominios.filter(c => state.selectedCondos.has(c.id));
+  const telas = sel.reduce((s, c) => s + (c.telas || 1), 0);
+  const moradores = sel.reduce((s, c) => s + (c.moradores || 0), 0);
+  const valorTela = parseFloat((document.getElementById('valor_tela').value || '0').replace(/\./g, '').replace(',', '.')) || 0;
+  const valorMensalRaw = (document.getElementById('valor_mensal_input').value || '').replace(/\./g, '').replace(',', '.');
+  const valorMensalDigitado = parseFloat(valorMensalRaw);
+  const mult = getDurationMult();
+  const plan = planos.find(p => p.id === state.selectedPlan) || planos[0];
+  const meses = plan.meses;
+  const valorComMult = valorTela * mult;
+  const mensalCheio = telas * valorComMult;
+  const mensal = (!isNaN(valorMensalDigitado) && valorMensalDigitado > 0) ? valorMensalDigitado : mensalCheio;
+  const descontoEfetivo = mensalCheio > 0 ? Math.max(0, (1 - mensal / mensalCheio) * 100) : 0;
+  const total = mensal * meses;
+  const dataInicio = document.getElementById('data_inicio').value;
+  const formaPgto = document.getElementById('forma_pgto');
+  const formaPgtoText = formaPgto.options[formaPgto.selectedIndex].text;
+  const spotDur = document.getElementById('spot_duracao').value;
+
+  const today = new Date();
+  const contractNum = 'MGB-' + today.getFullYear() + '-' + String(today.getMonth()+1).padStart(2,'0') + String(Math.floor(Math.random()*9000)+1000);
+
+  let clienteNome = isPJ ? (gv('nome_fantasia') || gv('razao_social')) : gv('nome_pf');
+  let clienteDoc = isPJ ? gv('cnpj') : gv('cpf');
+  let clienteDocLabel = isPJ ? 'CNPJ' : 'CPF';
+
+  function gv(id) { return document.getElementById(id) ? document.getElementById(id).value : ''; }
+
+  const enderecoFull = [gv('logradouro'), gv('numero') ? 'n\u00BA ' + gv('numero') : '', gv('complemento'), gv('bairro'), gv('cidade') + '/' + gv('estado'), gv('cep')].filter(Boolean).join(', ');
+
+  let fimDate = '';
+  if (dataInicio) {
+    const d = new Date(dataInicio + 'T00:00:00');
+    d.setMonth(d.getMonth() + meses);
+    fimDate = d.toLocaleDateString('pt-BR');
+  }
+
+  const output = document.getElementById('contract-output');
+  output.innerHTML =
+    (function(){
+      var svgHeader = '<svg xmlns="http://www.w3.org/2000/svg" width="760" height="140" viewBox="0 0 760 140">' +
+        '<defs><linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">' +
+          '<stop offset="0%" stop-color="#1E0A3C"/>' +
+          '<stop offset="40%" stop-color="#6B21A8"/>' +
+          '<stop offset="70%" stop-color="#D946EF"/>' +
+          '<stop offset="100%" stop-color="#EC4899"/>' +
+        '</linearGradient></defs>' +
+        '<rect width="760" height="140" rx="14" fill="url(#bg)"/>' +
+        '<circle cx="380" cy="42" r="26" fill="rgba(255,255,255,0.18)" stroke="rgba(255,255,255,0.35)" stroke-width="2"/>' +
+        '<text x="380" y="50" text-anchor="middle" fill="white" font-family="Inter,Arial,sans-serif" font-size="22" font-weight="900">M</text>' +
+        '<text x="380" y="82" text-anchor="middle" fill="white" font-family="Inter,Arial,sans-serif" font-size="22" font-weight="800" letter-spacing="-0.3">MGB M\u00CDDIA</text>' +
+        '<text x="380" y="102" text-anchor="middle" fill="rgba(255,255,255,0.85)" font-family="Inter,Arial,sans-serif" font-size="12" font-weight="500">Contrato de Veicula\u00E7\u00E3o Publicit\u00E1ria em Elevadores</text>' +
+        '<text x="380" y="124" text-anchor="middle" fill="rgba(255,255,255,0.65)" font-family="Inter,Arial,sans-serif" font-size="10">Contrato n\u00BA ' + contractNum + '  \u00B7  Emitido em ' + today.toLocaleDateString('pt-BR') + '</text>' +
+      '</svg>';
+      var b64 = btoa(unescape(encodeURIComponent(svgHeader)));
+      return '<div class="contract-art-header"><img src="data:image/svg+xml;base64,' + b64 + '" alt="MGB Midia Header"></div>';
+    })() +
+
+    '<div class="contract-section">' +
+      '<h3>1. Dados do Contratante</h3>' +
+      '<div class="contract-row"><span class="label">' + (isPJ ? 'Raz\u00E3o Social' : 'Nome') + '</span><span class="value">' + (isPJ ? gv('razao_social') : gv('nome_pf')) + '</span></div>' +
+      (isPJ && gv('nome_fantasia') ? '<div class="contract-row"><span class="label">Nome Fantasia</span><span class="value">' + gv('nome_fantasia') + '</span></div>' : '') +
+      '<div class="contract-row"><span class="label">' + clienteDocLabel + '</span><span class="value">' + clienteDoc + '</span></div>' +
+      (isPJ && gv('ie') ? '<div class="contract-row"><span class="label">Inscri\u00E7\u00E3o Estadual</span><span class="value">' + gv('ie') + '</span></div>' : '') +
+      (!isPJ && gv('rg') ? '<div class="contract-row"><span class="label">RG</span><span class="value">' + gv('rg') + '</span></div>' : '') +
+      '<div class="contract-row"><span class="label">Endere\u00E7o</span><span class="value">' + enderecoFull + '</span></div>' +
+      '<div class="contract-row"><span class="label">Respons\u00E1vel</span><span class="value">' + gv('contato_nome') + (gv('contato_cargo') ? ' (' + gv('contato_cargo') + ')' : '') + '</span></div>' +
+      '<div class="contract-row"><span class="label">Telefone</span><span class="value">' + gv('contato_tel') + '</span></div>' +
+      '<div class="contract-row"><span class="label">E-mail</span><span class="value">' + gv('contato_email') + '</span></div>' +
+    '</div>' +
+
+    '<div class="contract-section">' +
+      '<h3>2. Dados da Contratada</h3>' +
+      '<div class="contract-row"><span class="label">Raz\u00E3o Social</span><span class="value">MGB M\u00EDdia Comunica\u00E7\u00E3o LTDA</span></div>' +
+      '<div class="contract-row"><span class="label">Nome Fantasia</span><span class="value">MGB M\u00EDdia</span></div>' +
+      '<div class="contract-row"><span class="label">CNPJ</span><span class="value">23.770.170/0001-50</span></div>' +
+      '<div class="contract-row"><span class="label">Endere\u00E7o</span><span class="value">Londrina/PR</span></div>' +
+    '</div>' +
+
+    '<div class="contract-section">' +
+      '<h3>3. Pontos de Veicula\u00E7\u00E3o</h3>' +
+      '<table class="contract-table"><thead><tr>' +
+        '<th>Condom\u00EDnio</th><th>Bairro</th><th>Torres</th><th>Telas</th><th>Moradores</th><th>Inser\u00E7\u00F5es/dia</th><th>Inser\u00E7\u00F5es/m\u00EAs</th>' +
+      '</tr></thead><tbody>' +
+      sel.map(function(c) {
+        return '<tr><td><strong>' + c.nome + '</strong>' + (c.tipo ? ' <em>(' + c.tipo + ')</em>' : '') + '</td>' +
+          '<td>' + c.bairro + '</td>' +
+          '<td>' + (c.torres || 'A definir') + '</td>' +
+          '<td>' + (c.telas || 'A definir') + '</td>' +
+          '<td>' + (c.moradores ? c.moradores.toLocaleString('pt-BR') : 'A definir') + '</td>' +
+          '<td>' + ((c.telas || 1) * 440).toLocaleString('pt-BR') + '</td>' +
+          '<td>' + ((c.telas || 1) * 440 * 30).toLocaleString('pt-BR') + '</td></tr>';
+      }).join('') +
+      '<tr style="font-weight:700; background:#F0E6FF;">' +
+        '<td>TOTAL</td><td></td><td>' + sel.reduce(function(s,c){return s+(c.torres||0);},0) + '</td>' +
+        '<td>' + telas + '</td>' +
+        '<td>' + moradores.toLocaleString('pt-BR') + '</td>' +
+        '<td>' + (telas * 440).toLocaleString('pt-BR') + '</td>' +
+        '<td>' + (telas * 440 * 30).toLocaleString('pt-BR') + '</td></tr>' +
+      '<tr style="background:#F0E6FF;"><td colspan="7" style="font-size:11px; color:#6B21A8; font-weight:600;">Alcance estimado (1,3x): ~' + Math.round(moradores * 1.3).toLocaleString('pt-BR') + ' pessoas/m\u00EAs</td></tr>' +
+      '</tbody></table>' +
+    '</div>' +
+
+    '<div class="contract-section">' +
+      '<h3>4. Especifica\u00E7\u00F5es T\u00E9cnicas</h3>' +
+      '<div class="contract-row"><span class="label">Dura\u00E7\u00E3o do Spot</span><span class="value">' + spotDur + ' segundos \u2014 Sem \u00E1udio' + (mult > 1 ? ' (multiplicador ' + mult + 'x)' : '') + '</span></div>' +
+      '<div class="contract-row"><span class="label">Formato</span><span class="value">' + document.getElementById('spot_formato').options[document.getElementById('spot_formato').selectedIndex].text + '</span></div>' +
+      '<div class="contract-row"><span class="label">Resolu\u00E7\u00E3o</span><span class="value">1080 x 1100 px</span></div>' +
+      '<div class="contract-row"><span class="label">Exibi\u00E7\u00F5es</span><span class="value">M\u00EDn. 440 inser\u00E7\u00F5es/dia por tela (~13.200/m\u00EAs)</span></div>' +
+      (gv('obs_material') ? '<div class="contract-row"><span class="label">Observa\u00E7\u00F5es</span><span class="value">' + gv('obs_material') + '</span></div>' : '') +
+    '</div>' +
+
+    '<div class="contract-section">' +
+      '<h3>5. Plano e Investimento</h3>' +
+      '<div class="contract-row"><span class="label">Plano</span><span class="value">' + plan.nome + ' (' + meses + (meses === 1 ? ' m\u00EAs' : ' meses') + ')</span></div>' +
+      '<div class="contract-row"><span class="label">Vig\u00EAncia</span><span class="value">' + (dataInicio ? new Date(dataInicio+'T00:00:00').toLocaleDateString('pt-BR') : '___/___/______') + ' a ' + (fimDate || '___/___/______') + '</span></div>' +
+      '<div class="contract-row"><span class="label">Valor base por Tela/M\u00EAs</span><span class="value">R$ ' + valorTela.toLocaleString('pt-BR', {minimumFractionDigits:2}) + '</span></div>' +
+      (mult > 1 ? '<div class="contract-row"><span class="label">Multiplicador (' + spotDur + 's)</span><span class="value">' + mult + 'x \u2192 R$ ' + valorComMult.toLocaleString('pt-BR', {minimumFractionDigits:2}) + '/tela</span></div>' : '') +
+      (descontoEfetivo > 0 ? '<div class="contract-row"><span class="label">Desconto negociado</span><span class="value">' + descontoEfetivo.toFixed(2).replace('.', ',') + '%</span></div>' : '') +
+      '<div class="contract-row"><span class="label">Forma de Pagamento</span><span class="value">' + formaPgtoText + '</span></div>' +
+    '</div>' +
+
+    '<div class="contract-total">' +
+      '<div class="small">Valor Mensal</div>' +
+      '<div class="big">R$ ' + mensal.toLocaleString('pt-BR', {minimumFractionDigits:2}) + '</div>' +
+      '<div class="small" style="margin-top:8px;">Valor Total do Contrato (' + meses + 'x)</div>' +
+      '<div class="big" style="font-size:32px;">R$ ' + total.toLocaleString('pt-BR', {minimumFractionDigits:2}) + '</div>' +
+    '</div>' +
+
+    '<div class="clauses">' +
+      '<h3 style="font-size:11px; font-weight:700; color:#6B21A8; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:6px; padding-bottom:4px; border-bottom:1px solid #E9E0F5;">6. Termos e Condi\u00E7\u00F5es</h3>' +
+
+      '<h4>6.1. Objeto</h4>' +
+      '<p>O presente contrato tem por objeto a veicula\u00E7\u00E3o de conte\u00FAdo publicit\u00E1rio do CONTRATANTE nas telas de m\u00EDdia digital em elevadores administradas pela CONTRATADA, nos condom\u00EDnios e quantidades especificados na cl\u00E1usula 3.</p>' +
+
+      '<h4>6.2. Obriga\u00E7\u00F5es da Contratada</h4>' +
+      '<p>a) Garantir a exibi\u00E7\u00E3o do material publicit\u00E1rio nos hor\u00E1rios e frequ\u00EAncias estabelecidos.<br>' +
+      'b) Manter os equipamentos em pleno funcionamento, realizando manuten\u00E7\u00E3o preventiva e corretiva.<br>' +
+      'c) Fornecer relat\u00F3rios mensais de veicula\u00E7\u00E3o comprovando a exibi\u00E7\u00E3o do material.<br>' +
+      'd) Comunicar ao CONTRATANTE qualquer interrup\u00E7\u00E3o superior a 24 horas, com compensa\u00E7\u00E3o proporcional.</p>' +
+
+      '<h4>6.3. Obriga\u00E7\u00F5es do Contratante</h4>' +
+      '<p>a) Fornecer o material publicit\u00E1rio dentro das especifica\u00E7\u00F5es t\u00E9cnicas com no m\u00EDnimo 3 dias \u00FAteis de anteced\u00EAncia.<br>' +
+      'b) Efetuar os pagamentos nas datas acordadas.<br>' +
+      'c) Responsabilizar-se integralmente pelo conte\u00FAdo veiculado, garantindo que n\u00E3o infrinja direitos de terceiros nem legisla\u00E7\u00E3o vigente.</p>' +
+
+      '<h4>6.4. Pagamento</h4>' +
+      '<p>O pagamento ser\u00E1 realizado mensalmente, por ' + formaPgtoText.toLowerCase() + ', com vencimento todo dia 15 de cada m\u00EAs. O atraso acarretar\u00E1 multa de 2% e juros de 1% ao m\u00EAs.</p>' +
+
+      '<h4>6.5. Rescis\u00E3o</h4>' +
+      '<p>O contrato poder\u00E1 ser rescindido por qualquer parte mediante aviso pr\u00E9vio de 30 dias. A rescis\u00E3o antecipada pelo CONTRATANTE antes do t\u00E9rmino do plano implicar\u00E1 multa proporcional de 20% sobre os meses restantes.</p>' +
+
+      '<h4>6.6. Pol\u00EDtica de Conte\u00FAdo</h4>' +
+      '<p>A CONTRATADA reserva-se o direito de recusar material que contenha conte\u00FAdo il\u00EDcito, ofensivo, pol\u00EDtico-partid\u00E1rio, religioso de cunho proselitista, ou que n\u00E3o atenda aos padr\u00F5es t\u00E9cnicos exigidos.</p>' +
+
+      '<h4>6.7. Falhas T\u00E9cnicas</h4>' +
+      '<p>Em caso de indisponibilidade das telas por motivo t\u00E9cnico superior a 48 horas cont\u00EDnuas, a CONTRATADA conceder\u00E1 b\u00F4nus de veicula\u00E7\u00E3o proporcional ao per\u00EDodo de inatividade.</p>' +
+
+      '<h4>6.8. Foro</h4>' +
+      '<p>Fica eleito o foro da comarca de Londrina/PR para dirimir quaisquer quest\u00F5es oriundas deste contrato.</p>' +
+    '</div>' +
+
+    '<div class="signature-area">' +
+      '<div class="sig-line"><div class="name">' + (clienteNome || '______________________________') + '</div>' +
+        '<div class="role">CONTRATANTE \u00B7 ' + clienteDocLabel + ': ' + (clienteDoc || '_______________') + '</div></div>' +
+      '<div class="sig-line"><div class="name">MGB M\u00EDdia</div>' +
+        '<div class="role">CONTRATADA \u00B7 CNPJ: 23.770.170/0001-50</div></div>' +
+    '</div>' +
+
+    '<p style="text-align:center; margin-top:30px; font-size:11px; color:#6B7280;">' +
+      'Londrina/PR, ' + today.toLocaleDateString('pt-BR', { day: 'numeric', month: 'long', year: 'numeric' }) +
+    '</p>';
+
+  // ── Monta os dados e envia pro Google Sheets ──
+  var fimDateISO = '';
+  if (dataInicio) {
+    var dd = new Date(dataInicio + 'T00:00:00');
+    dd.setMonth(dd.getMonth() + meses);
+    fimDateISO = dd.toLocaleDateString('pt-BR');
+  }
+
+  saveToSheets({
+    contractNum: contractNum,
+    dataEmissao: today.toLocaleDateString('pt-BR'),
+    tipoPessoa: isPJ ? 'Pessoa Jurídica' : 'Pessoa Física',
+    documento: clienteDoc,
+    razaoSocial: isPJ ? gv('razao_social') : gv('nome_pf'),
+    nomeFantasia: isPJ ? gv('nome_fantasia') : '',
+    ie: isPJ ? gv('ie') : '',
+    rg: !isPJ ? gv('rg') : '',
+    cep: gv('cep'),
+    endereco: [gv('logradouro'), gv('numero') ? 'n\u00BA ' + gv('numero') : '', gv('complemento')].filter(Boolean).join(', '),
+    bairro: gv('bairro'),
+    cidade: gv('cidade'),
+    estado: gv('estado'),
+    responsavel: gv('contato_nome'),
+    cargo: gv('contato_cargo'),
+    telefone: gv('contato_tel'),
+    email: gv('contato_email'),
+    condominios: sel.map(function(c) { return c.nome; }).join(', '),
+    qtdCondominios: sel.length,
+    qtdTelas: telas,
+    totalMoradores: moradores,
+    insercoesDia: telas * 440,
+    insercoesMes: telas * 440 * 30,
+    impactosMes: Math.round(moradores * 1.3),
+    duracaoSpot: spotDur + 's',
+    multiplicador: mult + 'x',
+    formato: document.getElementById('spot_formato').options[document.getElementById('spot_formato').selectedIndex].text,
+    plano: plan.nome,
+    meses: meses,
+    dataInicio: dataInicio ? new Date(dataInicio+'T00:00:00').toLocaleDateString('pt-BR') : '',
+    dataFim: fimDateISO,
+    valorBaseTela: 'R$ ' + valorTela.toLocaleString('pt-BR', {minimumFractionDigits:2}),
+    valorComMult: 'R$ ' + valorComMult.toLocaleString('pt-BR', {minimumFractionDigits:2}),
+    desconto: descontoEfetivo + '%',
+    valorMensal: 'R$ ' + mensal.toLocaleString('pt-BR', {minimumFractionDigits:2}),
+    valorTotal: 'R$ ' + total.toLocaleString('pt-BR', {minimumFractionDigits:2}),
+    formaPagamento: formaPgtoText,
+    obsMaterial: gv('obs_material')
+  });
+}
+
+// ═══════════════════════════════════════
+// SALVAR NO GOOGLE SHEETS
+// ═══════════════════════════════════════
+function saveToSheets(contractData) {
+  var statusEl = document.getElementById('save-status');
+
+  if (!GOOGLE_SHEETS_URL) {
+    statusEl.style.display = 'block';
+    statusEl.style.background = '#FEF3C7';
+    statusEl.style.color = '#92400E';
+    statusEl.style.border = '1px solid #FCD34D';
+    statusEl.innerHTML = '⚠️ Google Sheets não configurado. O contrato foi gerado mas não salvo. Configure a URL no código para ativar o salvamento automático.';
+    return;
+  }
+
+  statusEl.style.display = 'block';
+  statusEl.style.background = '#EDE9FE';
+  statusEl.style.color = '#6B21A8';
+  statusEl.style.border = '1px solid #C4B5FD';
+  statusEl.innerHTML = '⏳ Salvando contrato no banco de dados...';
+
+  fetch(GOOGLE_SHEETS_URL, {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(contractData)
+  })
+  .then(function() {
+    statusEl.style.background = '#DCFCE7';
+    statusEl.style.color = '#166534';
+    statusEl.style.border = '1px solid #86EFAC';
+    statusEl.innerHTML = '✅ Contrato <strong>' + contractData.contractNum + '</strong> salvo no Google Sheets com sucesso!';
+  })
+  .catch(function(err) {
+    statusEl.style.background = '#FEE2E2';
+    statusEl.style.color = '#991B1B';
+    statusEl.style.border = '1px solid #FCA5A5';
+    statusEl.innerHTML = '❌ Erro ao salvar: ' + err.message + '. O contrato foi gerado normalmente — salve o PDF como backup.';
+  });
+}
+
+// ═══════════════════════════════════════
+// RESET
+// ═══════════════════════════════════════
+function resetForm() {
+  if (!confirm('Limpar todos os dados e iniciar um novo contrato?')) return;
+  document.querySelectorAll('input:not([readonly]), textarea').forEach(function(i) { i.value = ''; });
+  document.querySelectorAll('select').forEach(function(s) { s.selectedIndex = 0; });
+  document.querySelectorAll('input').forEach(function(i) { i.classList.remove('success', 'error', 'loading'); });
+  document.getElementById('cnpj-hint').textContent = 'Digite o CNPJ para preencher automaticamente';
+  document.getElementById('cnpj-hint').style.color = '';
+  document.getElementById('cep-hint').textContent = 'Digite o CEP para preencher automaticamente';
+  document.getElementById('cep-hint').style.color = '';
+  state.selectedCondos.clear();
+  state.selectedPlan = null;
+  renderCondos();
+  renderPlans();
+  calcTotal();
+  switchTab('cliente');
+}
+
+// ═══════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════
+renderCondos();
+renderPlans();
+const todayStr = new Date().toISOString().split('T')[0];
+document.getElementById('data_inicio').value = todayStr;
+</script>
+
+</body>
+</html>
